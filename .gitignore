@@ -24,3 +24,10 @@ out/
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
+
+/build/
+/.gradle/
+
+.kotlin/
+
+.gradle/buildOutputCleanup/

@@ -1,4 +1,7 @@
 // 1. Product (Abstract Interface)
+
+package factory
+
 interface Vehicle {
     fun drive()
 }
