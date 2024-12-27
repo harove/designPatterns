@@ -1,0 +1,26 @@
+# Ignore IDE settings
+.idea/
+.vscode/
+*.iml
+
+# Ignore Kotlin build output
+/build/
+out/
+
+# Ignore JAR files
+*.jar
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore compiled files
+*.class
+
+# Ignore Kotlin-specific files
+*.kts
+*.kt.metadata
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
