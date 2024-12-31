@@ -1,11 +1,45 @@
-// 1. Target Interface
-// This is the interface the client expects to work with.
+// ------------------------------------------------------------
+// Adapter Design Pattern Example
+// ------------------------------------------------------------
+// The Adapter Pattern:
+// - Allows incompatible interfaces to work together.
+// - Acts as a bridge between two incompatible interfaces (Target and Adaptee).
+// - Promotes flexibility by decoupling the client from the Adaptee's implementation.
+
+// ------------------------------------------------------------
+// Key Steps for Applying the Adapter Pattern (GoF)
+// ------------------------------------------------------------
+// 1. Define a Target interface that the client expects to work with.
+// 2. Identify an existing class (Adaptee) with incompatible behavior.
+// 3. Create an Adapter class that implements the Target interface and 
+//    translates requests from the Target to the Adaptee.
+// 4. Ensure the Client uses only the Target interface, relying on the Adapter
+//    to handle interactions with the Adaptee.
+
+// ------------------------------------------------------------
+// SOLID Principles Applied
+// ------------------------------------------------------------
+// - Single Responsibility Principle (SRP): The Adapter class focuses solely 
+//   on bridging the gap between the Target and the Adaptee.
+// - Open/Closed Principle (OCP): The Adapter allows new types of Adaptees to
+//   be integrated without modifying the Client or existing Adapter logic.
+// - Dependency Inversion Principle (DIP): The Client depends on abstractions 
+//   (Target interface) rather than concrete implementations (Adaptee).
+
+// ------------------------------------------------------------
+// Step 1: Target Interface
+// ------------------------------------------------------------
+// Defines the expected interface for the Client.
+// The Client interacts with this interface, ensuring loose coupling.
 interface MediaPlayer {
     fun play(audioType: String, fileName: String)
 }
 
-// 2. Adaptee
-// This is the existing class with incompatible functionality that we want to use.
+// ------------------------------------------------------------
+// Step 2: Adaptee
+// ------------------------------------------------------------
+// An existing class with incompatible functionality.
+// The Adaptee contains specialized methods that the Client cannot directly use.
 class AdvancedMediaPlayer {
     fun playMp3(fileName: String) {
         println("Playing mp3 file: $fileName")
@@ -16,34 +50,44 @@ class AdvancedMediaPlayer {
     }
 }
 
-// 3. Adapter
-// The Adapter bridges the gap between the Target interface (MediaPlayer) and the Adaptee (AdvancedMediaPlayer).
+// ------------------------------------------------------------
+// Step 3: Adapter
+// ------------------------------------------------------------
+// The Adapter class translates requests from the Target interface (MediaPlayer) 
+// to the Adaptee (AdvancedMediaPlayer). It acts as a bridge between the two.
 class MediaAdapter(private val advancedMediaPlayer: AdvancedMediaPlayer) : MediaPlayer {
     override fun play(audioType: String, fileName: String) {
         when (audioType) {
-            "mp3" -> advancedMediaPlayer.playMp3(fileName) // Delegate to Adaptee
-            "mp4" -> advancedMediaPlayer.playMp4(fileName) // Delegate to Adaptee
+            "mp3" -> advancedMediaPlayer.playMp3(fileName) // Delegates mp3 requests
+            "mp4" -> advancedMediaPlayer.playMp4(fileName) // Delegates mp4 requests
             else -> println("Unsupported audio type: $audioType")
         }
     }
 }
 
-// 4. Client
-// The client interacts with the Target interface (MediaPlayer), unaware of the Adaptee.
+// ------------------------------------------------------------
+// Step 4: Client
+// ------------------------------------------------------------
+// The Client interacts with the Target interface (MediaPlayer).
+// The Client is decoupled from the Adaptee, relying instead on the Adapter.
 class AudioPlayer : MediaPlayer {
-    private val advancedMediaPlayer = AdvancedMediaPlayer()
-    private val adapter = MediaAdapter(advancedMediaPlayer) // Use the adapter to bridge the gap
+    private val advancedMediaPlayer = AdvancedMediaPlayer() // Adaptee instance
+    private val adapter = MediaAdapter(advancedMediaPlayer) // Adapter instance
 
     override fun play(audioType: String, fileName: String) {
         if (audioType == "mp3" || audioType == "mp4") {
-            adapter.play(audioType, fileName) // Use the adapter for playback
+            adapter.play(audioType, fileName) // Uses the Adapter for playback
         } else {
             println("Unsupported audio type: $audioType")
         }
     }
 }
 
-// Main function to demonstrate the Adapter Pattern
+// ------------------------------------------------------------
+// Main Function (Client Code)
+// ------------------------------------------------------------
+// Demonstrates the use of the Adapter Pattern to enable the Client
+// to work with an incompatible Adaptee via the Adapter.
 fun main() {
     val audioPlayer = AudioPlayer()
 

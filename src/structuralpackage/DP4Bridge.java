@@ -1,14 +1,41 @@
-// 1. Define the "Abstraction" interface (independent of implementation details)
+// ------------------------------------------------------------
+// Bridge Design Pattern Example
+// ------------------------------------------------------------
+// The Bridge Pattern:
+// - Decouples an abstraction (e.g., Shape) from its implementation (e.g., Color).
+// - Both the abstraction and implementation can evolve independently.
+// - Promotes flexibility and scalability by favoring composition over inheritance.
+
+// ------------------------------------------------------------
+// Step 1: Define the Abstraction (Shape)
+// ------------------------------------------------------------
+// The "Shape" interface defines high-level operations that depend on low-level details (Color).
+// SOLID Principle: Dependency Inversion Principle (DIP)
+// - Shape depends on the abstraction (Color) instead of concrete implementations.
+
 interface Shape {
-    void draw(); // High-level operation
+    void draw(); // High-level operation to draw a shape
 }
 
-// 2. Define the "Implementor" interface (bridge for different implementations)
+// ------------------------------------------------------------
+// Step 2: Define the Implementor (Color)
+// ------------------------------------------------------------
+// The "Color" interface defines the low-level operations (filling with color)
+// that can vary independently from the Shape abstraction.
+// SOLID Principle: Interface Segregation Principle (ISP)
+// - The interface is specific and focused, providing only what is required for colors.
+
 interface Color {
-    void fillColor(); // Low-level operation
+    void fillColor(); // Low-level operation to fill a shape with color
 }
 
-// 3. Provide concrete implementations of the Implementor
+// ------------------------------------------------------------
+// Step 3: Implement Concrete Implementors (Color)
+// ------------------------------------------------------------
+// Concrete implementations of the "Color" interface provide specific behaviors for filling shapes with colors.
+// SOLID Principle: Open-Closed Principle (OCP)
+// - New colors can be added without modifying existing classes.
+
 class RedColor implements Color {
     @Override
     public void fillColor() {
@@ -23,54 +50,12 @@ class BlueColor implements Color {
     }
 }
 
-// 4. Extend the Abstraction by using the Implementor
-abstract class AbstractShape implements Shape {
-    protected Color color; // Bridge to the Implementor
+// ------------------------------------------------------------
+// Step 4: Extend the Abstraction (AbstractShape)
+// ------------------------------------------------------------
+// The "AbstractShape" class acts as a bridge between the Shape abstraction and the Color implementation.
+// It links high-level Shape behavior with low-level Color details through composition.
+// SOLID Principle: Single Responsibility Principle (SRP)
+// - The AbstractShape class only manages the bridge between Shape and Color.
 
-    // Constructor to link the Implementor
-    public AbstractShape(Color color) {
-        this.color = color;
-    }
-}
-
-// 5. Concrete Abstractions that extend the high-level abstraction
-class Circle extends AbstractShape {
-    public Circle(Color color) {
-        super(color);
-    }
-
-    @Override
-    public void draw() {
-        System.out.print("Drawing a Circle - ");
-        color.fillColor(); // Delegate the color operation
-    }
-}
-
-class Square extends AbstractShape {
-    public Square(Color color) {
-        super(color);
-    }
-
-    @Override
-    public void draw() {
-        System.out.print("Drawing a Square - ");
-        color.fillColor(); // Delegate the color operation
-    }
-}
-
-// 6. Client code to demonstrate the Bridge pattern
-public class DP4Bridge {
-    public static void main(String[] args) {
-        // Create different color implementations
-        Color red = new RedColor();
-        Color blue = new BlueColor();
-
-        // Create shapes with different colors
-        Shape redCircle = new Circle(red);
-        Shape blueSquare = new Square(blue);
-
-        // Draw shapes
-        redCircle.draw();
-        blueSquare.draw();
-    }
-}
+abstract class AbstractShape implements S

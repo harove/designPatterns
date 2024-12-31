@@ -1,5 +1,20 @@
-// 1. Product (The complex object to be built)
 package builder
+
+// ------------------------------------------------------------
+// Builder Design Pattern Example
+// ------------------------------------------------------------
+// The Builder Pattern:
+// - Separates the construction of a complex object from its representation.
+// - Allows step-by-step construction of objects and provides flexibility for 
+//   different representations of the same type of object.
+
+// ------------------------------------------------------------
+// Step 1: Define the Product (Complex Object)
+// ------------------------------------------------------------
+// The `Car` class represents the complex object to be built. It has multiple 
+// attributes (engine, wheels, body) that will be incrementally set by the builder.
+// - Adheres to the Single Responsibility Principle (SRP): The class focuses solely
+//   on representing the Car entity.
 
 class Car {
     var engine: String = ""
@@ -11,7 +26,14 @@ class Car {
     }
 }
 
-// 2. Builder (Interface that defines the building steps)
+// ------------------------------------------------------------
+// Step 2: Define the Builder Interface
+// ------------------------------------------------------------
+// The `CarBuilder` interface declares abstract methods for building each part of
+// the product. This ensures that all concrete builders follow a consistent protocol.
+// - Adheres to the Interface Segregation Principle (ISP): The interface is narrowly
+//   focused on construction-related methods.
+
 interface CarBuilder {
     fun buildEngine(): CarBuilder
     fun buildWheels(): CarBuilder
@@ -19,7 +41,16 @@ interface CarBuilder {
     fun getResult(): Car
 }
 
-// 3. ConcreteBuilder (A concrete builder that implements the building steps)
+// ------------------------------------------------------------
+// Step 3: Implement Concrete Builders
+// ------------------------------------------------------------
+// Concrete implementations of the `CarBuilder` interface provide specific
+// instructions for constructing different types of cars.
+// - Adheres to the Single Responsibility Principle (SRP): Each builder focuses
+//   on constructing a particular representation of the product.
+// - Follows the Open/Closed Principle (OCP): Adding new builders for different
+//   car types does not require modifying the existing code.
+
 class SportsCarBuilder : CarBuilder {
     private val car = Car()
 
@@ -66,7 +97,15 @@ class SUVCarBuilder : CarBuilder {
     }
 }
 
-// 4. Director (A class that constructs the product using the builder)
+// ------------------------------------------------------------
+// Step 4: Define the Director
+// ------------------------------------------------------------
+// The `CarDirector` class encapsulates the construction process.
+// It delegates the step-by-step construction to the builder.
+// - Adheres to the Dependency Inversion Principle (DIP): The director depends
+//   on the abstraction (`CarBuilder`), not concrete implementations.
+// - Provides better maintainability and flexibility for constructing products.
+
 class CarDirector(private val builder: CarBuilder) {
     fun construct(): Car {
         return builder.buildEngine()
@@ -76,15 +115,23 @@ class CarDirector(private val builder: CarBuilder) {
     }
 }
 
-// Main function to demonstrate the Builder Pattern
+// ------------------------------------------------------------
+// Main Function (Client Code)
+// ------------------------------------------------------------
+// The client code demonstrates how to use the builder to construct complex objects.
+// - Adheres to the Open/Closed Principle (OCP): The client can use new builders
+//   without changing its implementation.
+// - Promotes separation of concerns: The client does not need to know the details
+//   of the construction process.
+
 fun main() {
-    // Create a director and builder for a sports car
+    // Constructing a Sports Car using the builder
     val sportsCarBuilder = SportsCarBuilder()
     val director = CarDirector(sportsCarBuilder)
     val sportsCar = director.construct()
     println(sportsCar)  // Output: Car(engine='V8 Engine', wheels=4, body='Sports body')
 
-    // Create a director and builder for an SUV
+    // Constructing an SUV using the builder
     val suvCarBuilder = SUVCarBuilder()
     val directorForSUV = CarDirector(suvCarBuilder)
     val suvCar = directorForSUV.construct()
