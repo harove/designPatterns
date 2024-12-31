@@ -31,7 +31,7 @@ class ProxyBank implements Bank {
 }
 
 // Client
-public class Main {
+public class DP3Proxy {
     public static void main(String[] args) {
         Bank proxyBank = new ProxyBank(); // Placeholder object
         proxyBank.withdrawMoney("Alice"); // RealBank created and called here
